@@ -1,170 +1,94 @@
-# Mock Code Challenge - Coffee Shop (Object Relationships)
+# Coffee Shop Order System
 
-For this assignment, we'll be working with a Coffee shop-style domain.
+A Python object-oriented programming (OOP) project modeling relationships between customers, coffees, and orders in a coffee shop system.
 
-We have three models: `Coffee`, `Customer`, and `Order`.
+## Description
 
-For our purposes, a `Coffee` has many `Order`s, a `Customer` has many `Order`s,
-and a `Order` belongs to a `Customer` and to a `Coffee`.
+This project implements a coffee shop ordering system with three main classes: `Customer`, `Coffee`, and `Order`. It demonstrates object-oriented programming principles including encapsulation, property decorators, class methods, and aggregate methods for analyzing order data.
 
-`Coffee` - `Customer` is a many to many relationship.
+## Project Structure
 
-**Note**: You should draw your domain on paper or on a whiteboard _before you
-start coding_. Remember to identify a single source of truth for your data.
+```
+python-p3-mock-challenge/
+├── .github/
+├── .pytest_cache/
+├── .venv/
+├── lib/
+│   ├── classes/
+│   │   └── many_to_many.py
+│   └── testing/
+│       ├── coffee_test.py
+│       ├── conftest.py
+│       ├── customer_test.py
+│       └── order_test.py
+├── debug.py
+├── .canvas
+├── Pipfile
+├── Pipfile.lock
+├── pytest.ini
+└── README.md
+```
 
-## Topics
+## Features
 
-- Classes and Instances
-- Class and Instance Methods
-- Variable Scope
-- Object Relationships
-- lists and list Methods
+- **Customer Management**: Create and track customers with validated names
+- **Coffee Tracking**: Manage coffee types and their orders
+- **Order System**: Record orders with price validation
+- **Analytics**: Calculate average prices, count orders, and identify top customers
 
-## Instructions
+## Installation
 
-To get started, run `pipenv install` while inside of this directory. Then run
-`pipenv shell` to jump into the shell.
+1. Clone the repository
+2. Install dependencies using Pipenv:
 
-Build out all of the methods listed in the deliverables. The methods are listed
-in a suggested order, but you can feel free to tackle the ones you think are
-easiest. Be careful: some of the later methods rely on earlier ones.
+```bash
+pipenv install
+```
 
-**Remember!** This code challenge has tests to help you check your work. You can
-run `pytest` to make sure your code is functional before submitting.
+3. Activate the virtual environment:
 
-We've provided you with a tool that you can use to test your code. To use it,
-run `python debug.py` from the command line. This will start a `ipdb` session
-with your classes defined. You can test out the methods that you write here. You
-can add code to the `debug.py` file to define variables and create sample
-instances of your objects.
+```bash
+pipenv shell
+```
 
-Writing error-free code is more important than completing all of the
-deliverables listed - prioritize writing methods that work over writing more
-methods that don't work. You should test your code in the console as you write.
+## Running Tests
 
-Similarly, messy code that works is better than clean code that doesn't. First,
-prioritize getting things working. Then, if there is time at the end, refactor
-your code to adhere to best practices. When you encounter duplicated logic,
-extract it into a shared helper method.
+Run all tests:
 
-**Before you submit!** Save and run your code to verify that it works as you
-expect. If you have any methods that are not working yet, feel free to leave
-comments describing your progress.
+```bash
+pytest
+```
 
-## Deliverables
+Run tests and stop at first failure:
 
-Write the following methods in the classes in the files provided. Feel free to
-build out any helper methods if needed.
+```bash
+pytest -x
+```
 
-### Initializers and Properties
+## Classes
 
-#### Customer
+### Customer
+- Manages customer information with mutable names (1-15 characters)
+- Tracks all orders placed by the customer
+- Creates new orders
+- Identifies customers who spent the most on specific coffees
 
-- `Customer __init__(self, name)`
-  - Customer is initialized with a name
-- `Customer property name`
-  - Returns customer's name
-  - Names must be of type `str`
-  - Names must be between 1 and 15 characters, inclusive
-  - Should **be able** to change after the customer is instantiated
+### Coffee
+- Represents coffee types with immutable names (minimum 3 characters)
+- Tracks all orders for the coffee
+- Calculates average price and total order count
+- Lists all customers who ordered the coffee
 
-#### Coffee
+### Order
+- Links customers to coffees with prices ($1.0-$10.0)
+- Immutable once created
+- Validates customer and coffee instances
+- Maintains a registry of all orders
 
-- `Coffee __init__(self, name)`
-  - Coffee is initialized with a name
-- `Coffee property name`
-  - Returns the coffee's name
-  - Names must be of type `str`
-  - Names length must be greater or equal to 3 characters
-  - Should **not be able** to change after the coffee is instantiated
-  - _hint: `hasattr()`_
+## License
 
-#### Order
+This project is licensed under the MIT License.
 
-- `Order __init__(self, customer, coffee, price)`
-  - Order is initialized with a `Customer` instance, a `Coffee` instance, and a
-    price
-- `Order property price`
-  - Returns the price for the order
-  - Prices must be of type `float`
-  - Price must be a number between 1.0 and 10.0, inclusive
-  - Should **not be able** to change after the order is instantiated
-  - _hint: `hasattr()`_
+## Author
 
-### Object Relationship Methods and Properties
-
-#### Order
-
-- `Order property customer`
-  - Returns the customer object for that order
-  - Must be of type `Customer`
-- `Order property coffee`
-  - Returns the coffee object for that order
-  - Must be of type `Coffee`
-
-#### Coffee
-
-- `Coffee orders()`
-  - Returns a list of all orders for that coffee
-  - Orders must be of type `Order`
-- `Coffee customers()`
-  - Returns a **unique** list of all customers who have ordered a particular
-    coffee.
-  - Customers must be of type `Customer`
-
-#### Customer
-
-- `Customer orders()`
-  - Returns a list of all orders for that customer
-  - Orders must be of type `Order`
-- `Customer coffees()`
-  - Returns a **unique** list of all coffees a customer has ordered
-  - Coffees must be of type `Coffee`
-
-### Aggregate and Association Methods
-
-#### Customer
-
-- `Customer create_order(coffee, price)`
-  - Receives a **coffee object** and a **price number** as arguments
-  - Creates and returns a new Order instance and associates it with that
-    customer and the coffee object provided.
-
-#### Coffee
-
-- `Coffee num_orders()`
-  - Returns the total number of times a coffee has been ordered
-  - Returns `0` if the coffee has never been ordered
-- `Coffee average_price()`
-  - Returns the average price for a coffee based on its orders
-  - Returns `0` if the coffee has never been ordered
-  - Reminder: you can calculate the average by adding up all the orders prices
-    and dividing by the number of orders
-
-### Bonus: Aggregate and Association Method
-
-- `Customer classmethod most_aficionado(coffee)`
-  - Receives a **coffee object** argument
-  - Returns the `Customer` instance that has spent the most money on the coffee
-    instance provided as argument.
-  - Returns `None` if there are no customers for the coffee instance provided.
-  - _hint: will need a way to remember all `Customer` objects_
-  - Uncomment lines 137-147 in the customer_test file
-
-### Bonus: For any invalid inputs raise an `Exception`.
-
-- First, **comment out** the following lines
-  - **customer_test.py**
-    - lines 25-26, 40-41, and 44-45
-  - **coffee_test.py**
-    - lines 34-35
-  - **order_test.py**
-    - lines 46-47
-- Then, **uncomment** the following lines in the test files
-
-  - **customer_test.py**
-    - lines 31-32, 48-49, and 52-53
-  - **coffee_test.py**
-    - lines 22-23, 26-27, and 38-39
-  - **order_test.py**
-    - lines 32-33, 36-37, and 50-51
+Susan Gakii - Mock Code Challenge
